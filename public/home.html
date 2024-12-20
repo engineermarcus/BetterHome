@@ -1,0 +1,432 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <title>Gallery Web App</title>
+  <style>
+    /* General Styles */
+    body {
+	    font-family: Arial, sans-serif; /* Default font */
+	    margin: 0; /* Remove default margin */
+	    padding: 0; /* Remove default padding */
+	    background-color: #343434; /* Dark grey background */
+	    width: 100%; /* Ensures the body spans the full width of the viewport */
+	    max-width: 100%; /* Prevents unintended scaling issues */
+	    overflow-x: hidden; /* Hides any horizontal scrolling */
+}
+h1, p {
+      margin: 10px;
+    }
+
+    /* Initial state */
+.menu {
+	display: none;
+  background-color: #333; /* Example background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), 0 6px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover state (upward movement) */
+.menu:hover {
+  transform: translateY(-10px); /* Moves the element up */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.6); /* Darker and larger shadow */
+}
+
+    
+    /* Initial state */
+.menu ul li {
+  background-color: #333; /* Example background */
+  color: white; /* Text color */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), 0 6px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover state (upward movement) */
+.menu ul li:hover {
+  transform: translateY(-10px); /* Moves the element up */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.6); /* Darker and larger shadow */
+}
+    
+    
+
+    .menu-btn:hover {
+      background-color: black;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .menu ul {
+      list-style-type: none;
+      padding: 0;
+      cursor: pointer;
+    }
+    
+
+    .menu ul li a {
+      color: white;
+      text-decoration: none;}
+
+    .menu.active {
+      position: fixed;
+      top: 50px;
+      left: 50px;
+      display: block;
+      width: 30%;
+      height: 30%;
+    }
+
+    /* Floating Menu Button */
+    .menu-btn {
+      position: fixed;
+      top: 35px;
+      left: 20px;
+      z-index: 1001;  /* Above the menu */
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      height: 3em;
+      width: 3em;
+      text-align: center; 
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      background-color: #444; /* Grey background for the button */
+      border: none; /* Removes the border */
+      border-radius: 8px; /* Adds rounded corners */
+      padding: 10px 15px; /* Adds padding for the button */     
+      font-size: 16px; /* Adjusts the text size */              
+      color: white; /* White text color */                     
+      cursor: pointer; /* Adds a pointer cursor on hover */     
+      transition: background-color 0.3s ease; /* Smooth color transition on hover */  
+      background: linear-gradient(145deg, #1a1a1a, #000000);                                                               
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0,);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+      background: linear-gradient(145deg, #000000, #1a1a1a);                         
+      background: #000000;    
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      
+    }
+
+    .menu-btn:hover {
+      background-color: black;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); 
+      transition: box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+    
+
+    /* Search Box */
+    .search-bar {
+	    position: fixed; 
+	    top: 30px; /* Adds a gap from the top */
+	    right: 5px; /* Positions it in the top-right corner */
+	    display: flex; /* Aligns the input field and button horizontally */
+	    gap: 5px;/* Adds space between the input and the button */
+	    border: solid #444;
+	    border-radius: 5px;
+	    background-color: #444;
+	    margin-right: 30px;
+	    padding: 5px 5px;
+	    background: linear-gradient(145deg, #1a1a1a, #000000);
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+	    background: linear-gradient(145deg, #000000, #1a1a1a);
+	    background: #000000;
+	    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+   
+}
+.search-bar:hover{
+	box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */                                   
+	transform: translateY(-2px); 
+	box-sizing: border-box;
+	background-color: #333333;
+	box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+	
+	transform: translateY(-2px); /* Slight upward movement on hover */
+}.load-button button {
+  background: linear-gradient(145deg, #6e7dff, #5560ea); /* Gradient for depth */
+  border: none; /* Remove default border */
+  position: fixed;
+  bottom: 200px;
+  right: 50px;
+  
+  color: white; /* White text */
+  padding: 10px 20px; /* Adjust button size */
+  font-size: 16px;
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.2); /* 3D shadow effect */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transitions for hover effect */
+}
+
+/* Hover Effect */
+button:hover {
+  transform: translateY(-4px); /* Slight lift on hover */
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.3); /* Stronger shadow */
+}
+
+/* Active Effect (when clicked) */
+button:active {
+  transform: translateY(2px); /* Button appears to press down */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2), -2px -2px 4px rgba(255, 255, 255, 0.2); /* Pressed shadow effect */
+}
+
+
+.search-bar input[type="text"] {
+  background-color: #444; /* Grey background for the input field */
+  border: none; /* Removes the border */
+  border-radius: 5px; /* Adds rounded corners */
+  padding: 10px; /* Spacing inside the input field */
+  font-size: 16px; /* Adjusts the text size */
+  color: white; /* White text color */
+  outline: none; /* Removes the focus outline */
+  background: linear-gradient(145deg, #1a1a1a, #000000);                        
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);        
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);      
+  background: linear-gradient(145deg, #000000, #1a1a1a);                                  background: #000000;       
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.search-bar button {
+  background-color: #444; /* Grey background for the button */
+  border: none; /* Removes the border */
+  border-radius: 8px; /* Adds rounded corners */
+  padding: 10px 15px; /* Adds padding for the button */
+  font-size: 16px; /* Adjusts the text size */
+  color: white; /* White text color */
+  cursor: pointer; /* Adds a pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth color transition on hover */
+  background: linear-gradient(145deg, #1a1a1a, #000000);                  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);  
+  background: linear-gradient(145deg, #000000, #1a1a1a);                
+  background: #000000;    
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  
+}
+
+
+
+.search-bar button:hover {
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.4); 
+  transform: translateY(-2px); /* Slight upward movement on hover */
+  background-color: #333333;
+  box-shadow: 0px 12px 20px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+  transform: translateY(-2px); /* Slight upward movement on hover */
+}
+  /* Changes background to black on hover */
+
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 100px;                             
+      justify-content: center;                        
+      align-items: center;                           
+      flex-wrap: wrap; 
+      bottom: 30%;
+      padding: 20px 20px;                             
+      width: 100%;
+      border-radius: 12px;
+      overflow-x: hidden;
+      background-color: #2D353C;
+      
+
+    }
+    .gallery img {
+		    width: 200px;  
+                    height: auto; 
+                    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+                    border-radius: 12px;
+          }
+
+           .gallery img:hover {
+		   transform: scale(1.2) translateY(-10px);  
+		   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8), 0 6px 12px rgba(0, 0, 0, 0.6); 
+		   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}/*
+footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      left: 0;
+}
+
+    footer p {
+      margin: 0;
+    } */
+    .content{
+	    position: fixed;
+	    bottom: 50px;
+	    left: 20px;
+	    height: 120px;
+	    z-index: 1000;
+	    transform: translateX(100%);
+	    transform: translateY(10%);
+	    background-color: #333; /* Example background */  color: white; /* Text color */                    padding: 20px;                                    border-radius: 15px;                               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), 0 6px 12px rgba(0, 0, 0, 0.5);                            transition: transform 0.3s ease, box-shadow 0.3s ease;                                            }                                                                                                   /* Hover state (upward movement) */               .content:hover {                                 transform: translateY(-10px); /* Moves the element up */                                            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.6); /* Darker and larger shadow */
+
+     }.content p{
+	     justify-content: center;
+	     align-items: center;
+	     text-align: center;
+
+     }
+
+    .divider {
+      border-bottom: 2px solid #ccc;
+      margin: 20px 0;
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Toggle Menu -->
+  <div id="menu" class="menu">
+    <ul>
+	    <li><h1><a href="http://localhost:8080/fashion.html">Fashion Store</a></h1></li>
+    </ul>
+  </div>
+
+  <!-- Floating Menu Button -->
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+  <!-- Search Box -->
+  <div class="search-bar">
+	        <input type="text" id="searchInput" placeholder="Search images..." />
+<button id="searchButton" onclick="searchImages()">Search</button>
+
+
+  </div>
+  <div class="load-button" type="text">
+	  <button id="loadMoreButton" onclick="loadMoreImages()">Click to load more</button>
+
+  </div>
+
+  <!-- Gallery Section -->
+  <div id="gallery" class="gallery" >
+    <!-- Images will be populated here dynamically -->
+  </div>
+<!-- Gallery Section 
+<div id="gallery" class="gallery">
+  <Images will be populated here dynamically 
+</div> -->
+
+
+
+  
+
+   <!-- Exclusive Content Section -->
+  <div class="content" id="none_average">
+    <h1>Welcome To Gallery Store</h1>
+    <div class="divider"></div>
+    
+    <!-- Footer -->                                   <footer>                                            <p>&copy; Built with the fear of being average @2024 Neiman Marcus Onyango</p>        </footer>
+  </div>
+  <script>
+// Replace with your actual Pixabay API key
+const API_KEY = '47738300-8a57be1eb9c9f0a4c84785d77';
+
+// Initialize page and max pages
+let currentPage = 1;
+const maxPages = 1000;
+let lastSearchQuery = '';
+
+// Function to fetch images from Pixabay
+function fetchImages(page = 1, query = 'luxury') {
+    if (page > maxPages) return; // Limit to maxPages
+
+    const url = `https://pixabay.com/api/?key=${API_KEY}&q=${query}&image_type=photo&page=${page}&per_page=20&order=latest`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            displayGallery(data.hits);
+            checkLoadMoreButton(); // Check if we need to disable the "Load More" button
+        })
+        .catch(error => console.error('Error fetching images:', error));
+}
+
+
+// Function to display images in the gallery
+function displayGallery(images) {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = ''; // Clear previous images
+
+    images.forEach(img => {
+        const imgElement = document.createElement('img');
+        imgElement.src = img.webformatURL;  // Use the URL for the image
+        imgElement.alt = img.tags;
+        imgElement.title = img.tags;
+        gallery.appendChild(imgElement);
+    });
+}
+
+// Search Function
+function searchImages() {
+    const query = document.getElementById('searchInput').value.trim(); // Get the search query
+    // Only fetch new images if the search query is different from the last one and not empty
+    if (query !== lastSearchQuery && query !== '') {
+        lastSearchQuery = query;  // Update the last search query to prevent repetitive requests
+        currentPage = 1;  // Reset to the first page for a fresh search
+        fetchImages(currentPage, query); // Fetch images based on the query
+    }
+}
+
+// Load More Functionality
+function loadMoreImages() {
+    if (currentPage < maxPages) {
+        currentPage++;  // Increment the current page
+        fetchImages(currentPage, lastSearchQuery); // Fetch more images based on the last search query
+    } else {
+        console.log('No more pages to load.');
+    }
+}
+// Toggle Menu Function
+function toggleMenu() {
+    const menu = document.getElementById('menu');
+    // Toggle 'active' class on the menu to show or hide it
+    menu.classList.toggle('active');
+}
+// Automatically update the query every 30 seconds (30000ms)
+setInterval(() => {
+    const queries = ['nature', 'city', 'animals', 'architecture']; // Predefined list of queries
+    const randomIndex = Math.floor(Math.random() * queries.length);
+    currentQuery = queries[randomIndex];  // Pick a random query from the list
+    fetchImages(currentQuery);  // Fetch new images based on the updated query
+}, 30000); 
+    const Button = document.getElementById("searchButton");
+Button.onclick = function () {
+    const searchInput = document.getElementById("searchInput"); // Reference to the input field
+    const response = searchInput.value; // Get the search input value
+
+    if (response) {
+        searchImages(response); // Call the searchImages function with the input value
+        searchInput.value = ""; // Clear the search box
+    } else {
+        console.error("Search input is empty!");
+    }
+};
+// Initial fetch on page load
+fetchImages(currentPage, 'luxury');
+</script>
+</body>
+</html>

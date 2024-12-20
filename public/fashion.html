@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Fashion Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      border-radius: 5px;                               box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.95);
+    }
+    .item {
+      width: 300px;
+      text-align: center;
+      background: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;                               box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.95);   
+      
+    }
+    .item img {
+      max-width: 100%;
+      border-radius: 5px;
+      border-radius: 5px;                               box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.95);
+      .item img:hover {
+    transform: translateY(-10px);  /* Moves the element up */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.95);  /* Darker shadow when hovered */
+}
+    }
+    .item span {
+      font-size: 0.9em;
+      color: #555;
+    }
+    h1 {
+  position: relative;
+  top: 20px; /* Distance from the top */
+  left: 50%; /* Horizontally centered */
+  transform: translateX(-50%); /* Ensure the text is centered */
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.95);
+}
+      h1:hover {
+    transform: translateY(10%);  /* Moves the element up */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.95);  /* Darker shadow when hovered */
+}
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Fashion Store</h1>
+  <div class="gallery" id="gallery"></div> <!-- Gallery container -->
+
+  <script>
+    // API keys and endpoints
+    const UNSPLASH_API_KEY = 'S9-gqL7sn6wqWAQFYgZB5flNzmeB66ZrWyjKNIdmgEs'; // Use your API Key
+    const UNSPLASH_ENDPOINT = 'https://api.unsplash.com/search/photos';
+
+    // Category to fetch images for
+    const category = 'fashion'; // Modify category as needed
+    const numberOfItems = 500; // Number of items to display
+    const maxPages = 10; // Number of pages to fetch
+
+    // Function to fetch random images and their metadata
+    async function fetchRandomImage(query) {
+      const randomPage = Math.floor(Math.random() * maxPages) + 1; // Pick a random page
+      const response = await fetch(
+        `${UNSPLASH_ENDPOINT}?query=${query}&client_id=${UNSPLASH_API_KEY}&page=${randomPage}&per_page=30`
+      );
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        // Select a random image from the API response
+        const randomImage = data.results[Math.floor(Math.random() * data.results.length)];
+        return {
+          imageUrl: randomImage.urls.small, // Image URL
+          description: randomImage.description, // Description or fallback
+          photographer: randomImage.user.name || "Unknown Photographer" // Photographer's name
+        };
+      } else {
+        console.error(`No images found for query: ${query}`);
+        return {
+          imageUrl: 'https://via.placeholder.com/300', // Default placeholder if no image is found
+          description: null, // No description
+          photographer: 'N/A'
+        };
+      }
+    }
+
+    // Function to generate gallery items dynamically
+    async function generateGalleryItems() {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = ''; // Clear the gallery before updating
+
+      for (let i = 1; i <= numberOfItems; i++) {
+        // Create a new gallery item
+        const item = document.createElement('div');
+        item.className = 'item';
+
+        // Fetch image data
+        const { imageUrl, description, photographer } = await fetchRandomImage(category);
+
+        // Only show description if it's available
+        const displayDescription = description && description !== 'No description available.' ? `<span>${description}</span><br>` : '';
+
+        // Populate the item with content
+        item.innerHTML = `
+          <img src="${imageUrl}" alt="Fashion Item">
+          ${displayDescription}
+          <span style="font-size: 0.8em; color: #999;">Photo by ${photographer}</span>
+        `;
+
+        // Append the item to the gallery
+        gallery.appendChild(item);
+      }
+    }
+
+    // Generate gallery on page load
+    generateGalleryItems();
+
+    // Refresh images every 3 hours (3 hours = 10800000 milliseconds)
+    setInterval(generateGalleryItems, 10800000);
+  </script>
+</body>
+</html>
